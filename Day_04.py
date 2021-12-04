@@ -4,7 +4,6 @@ Created on Wed Dec  1 18:39:00 2021
 
 @author: rist
 """
-import numpy as np
 
 numbers = []
 
