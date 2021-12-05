@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Dec  1 18:39:00 2021
-
-@author: rist
-"""
-
 list = []
 
 f = open("input.txt", "r")
@@ -15,8 +8,7 @@ for x in list:
     x[1] = int(x[1])
 
 #Part 1
-h = 0
-d =  0
+h, d = 0, 0
 
 for x in list:
     if x[0] == 'forward':
@@ -27,10 +19,7 @@ for x in list:
         d -= x[1]
     else:
         print('Invalid command')
-        
 print(h*d)
-
-  
     
 #Part 2
 h = 0
@@ -46,6 +35,5 @@ for x in list:
     elif x[0] == 'up':
         a -= x[1]
     else:
-        print('Invalid command')
-        
+        print('Invalid command')     
 print(h*d)
