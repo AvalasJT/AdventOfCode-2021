@@ -22,7 +22,7 @@ for line in f:
     dy = int((y2 - y1) / diff)
     
     for j in range(diff+1):
-        ground[x1+j*dx][y1+j*dy][1] += 1
+        ground[x1+j*dx, y1+j*dy, 1] += 1
         
 print(len(np.where(ground[:,:,0] > 1)[0]))    
 print(len(np.where(ground[:,:,1] > 1)[0]))
