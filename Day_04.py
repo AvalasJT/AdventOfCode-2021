@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Dec  1 18:39:00 2021
-
-@author: rist
-"""
-
 numbers = []
 
 f = open("input.txt", "r")
@@ -79,7 +72,6 @@ def check_winners(boards, winners):
                 if col.count('x') == 5:
                    winners[i] = len(winners)+1
                    break
-
 
 play_boards = boards.copy()
 winners ={}
