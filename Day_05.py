@@ -1,13 +1,11 @@
 import numpy as np
 
 f = open("input.txt", "r")
-lines = f.readlines()
-f.close()
 
 #Part 1
 ground = np.zeros((1,1,2), int)
 
-for line in lines:
+for line in f:
     x1, y1, x2, y2 = [int(n) for n in line.replace(" -> ",",").split(",")]
     if max(x1, x2, y1, y2) > np.shape(ground)[0] - 1:
         ground = np.append(ground, np.zeros((max(x1, x2, y1, y2)+1 - np.shape(ground)[0],np.shape(ground)[0],2)), 0) #less slow
