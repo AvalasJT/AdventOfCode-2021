@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Dec  1 18:39:00 2021
-
-@author: rist
-"""
 import numpy as np
 
 f = open("input.txt", "r")
@@ -11,41 +5,32 @@ lines = f.readlines()
 f.close()
 
 #Part 1
-dim = 0
-x1s, y1s, x2s, y2s = [], [], [], []
-        
+ground = np.zeros((1,1), int)
+
 for line in lines:
-    start, end = line.strip('\n').split(' -> ')
-    x1, y1 = start.split(',')
-    x2, y2 = end.split(',')
-    x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-    if max(x1, x2, y1, y2) > dim:
-        dim = max(x1, x2, y1, y2)
-    x1s.append(x1)
-    x2s.append(x2)
-    y1s.append(y1)
-    y2s.append(y2)
+    x1, y1, x2, y2 = [int(x) for x in (line.strip('\n').split(' -> ')[0]+','+line.strip('\n').split(' -> ')[1]).split(',')]
+    while max(x1, x2, y1, y2) > np.shape(ground)[0] - 1:
+        ground = np.append(ground, np.zeros((1,np.shape(ground)[0])), 0) #slow
+        ground = np.append(ground, np.zeros((np.shape(ground)[0],1)), 1)
     
-ground = np.zeros((dim+1,dim+1), int)
-for i in range(len(x1s)):
-    if x1s[i] == x2s[i]:
-        s, e = min(y1s[i],y2s[i]), max(y1s[i],y2s[i])
-        ground[x1s[i], s:e+1] += 1
-    elif y1s[i] == y2s[i]:
-        s, e = min(x1s[i],x2s[i]), max(x1s[i],x2s[i])
-        ground[s:e+1, y1s[i]] += 1
+    if x1 == x2:
+        ground[x1, min(y1,y2):max(y1,y2)+1] += 1
+    elif y1 == y2:
+        ground[min(x1,x2):max(x1,x2)+1, y1] += 1
     else:
         continue #print('Not a horizontal or vertical line')
 print(len(np.where(ground > 1)[0]))
 
 #Part 2
-ground = np.zeros((dim+1,dim+1), int)
-for i in range(len(x1s)):
-    diff = max(abs(x2s[i] - x1s[i]) ,abs(y2s[i] - y1s[i]))
-    dx = int((x2s[i] - x1s[i]) / diff) 
-    dy = int((y2s[i] - y1s[i]) / diff)
+ground = np.zeros(np.shape(ground), int)
+for line in lines:
+    points = line.strip('\n').split(' -> ')
+    x1, y1, x2, y2 = [int(x) for x in (points[0]+','+points[1]).split(',')]
+    diff = max(abs(x2 - x1) ,abs(y2 - y1))
+    dx = int((x2 - x1) / diff) 
+    dy = int((y2 - y1) / diff)
     
     for j in range(diff+1):
-        ground[x1s[i]+j*dx][y1s[i]+j*dy] += 1
+        ground[x1+j*dx][y1+j*dy] += 1
     
 print(len(np.where(ground > 1)[0]))
