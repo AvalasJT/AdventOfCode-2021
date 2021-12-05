@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Dec  1 18:39:00 2021
-
-@author: rist
-"""
-
 list = []
 
 f = open("input.txt", "r")
