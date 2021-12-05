@@ -24,8 +24,7 @@ print(len(np.where(ground > 1)[0]))
 #Part 2
 ground = np.zeros(np.shape(ground), int)
 for line in lines:
-    points = line.strip('\n').split(' -> ')
-    x1, y1, x2, y2 = [int(x) for x in (points[0]+','+points[1]).split(',')]
+    x1, y1, x2, y2 = [int(x) for x in (line.strip('\n').split(' -> ')[0]+','+line.strip('\n').split(' -> ')[1]).split(',')]
     diff = max(abs(x2 - x1) ,abs(y2 - y1))
     dx = int((x2 - x1) / diff) 
     dy = int((y2 - y1) / diff)
