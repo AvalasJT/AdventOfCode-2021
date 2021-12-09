@@ -6,7 +6,7 @@ h = np.asarray([[int(x) for x in line.strip('\n')] for line in f.readlines()])
 #Part 1
 def local_min(arr):
     test = np.ones((np.shape(arr)[0]+2,np.shape(arr)[1]+2), dtype='i')*(np.amax(arr)+1)
-    test[1:-1,1:-1] = np.asarray(arr, dtype='i')
+    test[1:-1,1:-1] = arr
     bool_min = ((test < np.roll(test,  1, 0)) &
                 (test < np.roll(test, -1, 0)) &
                 (test < np.roll(test,  1, 1)) &
