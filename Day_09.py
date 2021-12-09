@@ -16,7 +16,7 @@ def local_min(arr):
 def risk_values(arr):
     return (arr + 1) * local_min(arr)
     
-print(sum(sum(risk_values(h))))
+print(np.sum(risk_values(h)))
 
 #Part 2
 def basin_size(arr, x):
@@ -30,7 +30,7 @@ def basin_size(arr, x):
         if np.all(test[1:-1, 1:-1] == test2):
             break
         test[1:-1, 1:-1] = test2
-    return sum(sum(test))
+    return np.sum(test)
 
 b_sizes = [basin_size(h, x) for x in np.argwhere(local_min(h))]
 b_sizes.sort(reverse=True)
