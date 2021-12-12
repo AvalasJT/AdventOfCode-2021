@@ -1,7 +1,7 @@
-f = open('input_test.txt', 'r')
-connections = [x.strip().split('-') for x in f.readlines()]
-connections = connections + [[x[1], x[0]] for x in connections]
-
+with open('input_test.txt', 'r') as f:
+    connections = [x.strip().split('-') for x in f.readlines()] 
+    connections += [[x[1], x[0]] for x in connections]
+    
 #Part 1 + 2
 def find_path_Joker(path, Joker):
     if path[-1] == 'end':
@@ -20,12 +20,7 @@ def find_path_Joker(path, Joker):
             
     return
 
-#Part 1
-paths = []
-find_path_Joker(['start'], False)
-print(len(paths))
-    
-#Part 2
-paths = []
-find_path_Joker(['start'], True)
-print(len(paths))
+for Joker in [False, True]:
+    paths = []
+    find_path_Joker(['start'], Joker)
+    print(len(paths))
