@@ -38,4 +38,4 @@ print(np.sum(page))
 for f in folds[1:]:
     page = fold(f, page)
 
-print(np.transpose(page)) #Interpretation of letters is still manual :(
+print(np.asarray([''.join(np.asarray(np.transpose(page), 'str')[i]).replace('0',' ').replace('1','#') for i in range(np.shape(page)[1])]).reshape((np.shape(page)[1]),1)) #Interpretation of letters is still manual :(
