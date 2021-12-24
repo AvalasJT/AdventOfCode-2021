@@ -40,7 +40,7 @@ def get_possible_moves(map):
             if not np.all([(map[j][room[c]] == '.') or (map[j][room[c]] == c) for j in range(1,dim)]): #room is blocked
                 continue
             
-            for j in range(dim-1,0, -1):  #if you amphi can enter room -> always do that
+            for j in range(dim-1,0, -1):  #if amphi can enter room -> always do that
                 if map[j][room[c]] == '.':
                     moves.append([(0,i), (j,room[c])])
                     return moves
@@ -63,11 +63,10 @@ def get_possible_moves(map):
                         continue
                     if np.all(map[0][i:l+1] == '.'):
                         moves.append([(j,i), (0,l)])
-            break #only first amphi can leave the room
-                        
+            break #only first amphi can leave the room             
     return moves
 
-def do_move(map, move):
+def do_move(map, move): #sounds so wrong, but move(x,y) was name-colliding with the move variable..
     m = deepcopy(map)
     m[move[1]] = m[move[0]]
     m[move[0]] = '.'
@@ -85,15 +84,8 @@ def solve(map, seq, solutions, cost):
         return
     
     moves = get_possible_moves(m)
-    if len(moves) == 1:
-        new_cost = calc_cost(m, moves[0])
-        if cost + new_cost >= best_cost:
-            return
-        solve(do_move(m, moves[0]), seq + [moves[0]], solutions, cost+new_cost)
-        return
-        
     for i, move in enumerate(moves):
-        if len(seq) < 2: #just for estimating remaining time
+        if len(seq) < 2: #just for estimating the remaining time
             print(len(seq), i, 'of', len(moves)-1)
         new_cost = calc_cost(m, move)
         if cost + new_cost >= best_cost:
@@ -110,23 +102,7 @@ def is_solved(m):
        
 def calc_cost(m, move):
     costs = {'A':1, 'B':10, 'C':100, 'D':1000}
-    c = costs[m[move[0]]]
-    if move[0][0] == 0 or move[1][0] == 0:
-        steps = abs(move[1][0]-move[0][0]) + abs(move[1][1]-move[0][1])
-    else:
-        steps = abs(move[1][1]-move[0][1]) + move[0][0] + move[1][0]
-    return c*steps
-
-def num_solved(m):
-    n = 0
-    dim = np.shape(m)[0]
-    for C,i in room.items():
-        if np.all([(m[j][i] == '.') or (m[j][i] == roomT[i]) for j in range(1,dim)]):
-            n += len(np.argwhere(m[1:,i] == roomT[i]))
-    return n
-
-def num_in_hallway(m):
-    return len(np.argwhere(m[0,:] != '.'))
+    return costs[m[move[0]]]*(abs(move[1][1]-move[0][1]) + move[0][0] + move[1][0])
 
 def is_blocked(m):
     for i in range(np.shape(m)[1]-1):
@@ -139,17 +115,12 @@ def is_blocked(m):
                 continue
             if room[a] >= j and room[b] <= i:
                 return True
-            
-    dim = np.shape(m)[0] 
-    for C, i in room.items():
-        if m[0][i] == C and not np.all([(m[j][i] == '.') or (m[j][i] == C) for j in range(1,dim)]):
-            return True
     return False
 
 def can_direct_change(m):
     dim = np.shape(m)[0]
     for C,i in room.items():
-        if m[1,i] != '.':
+        if m[1,i] != '.': #full
             continue
         if np.all([(m[j][i] == '.') or (m[j][i] == roomT[i]) for j in range(2,dim)]):
             pos = 0
@@ -161,15 +132,15 @@ def can_direct_change(m):
             for D,j in room.items():
                 if i == j:
                     continue
-                if not np.all([m[0][x] == '.' for x in range(min([i,j]), max([i,j])+1)]):
+                if not np.all([m[0][x] == '.' for x in range(min([i,j]), max([i,j])+1)]): #way between rooms is blocked
                     continue
                 for k in range(1,dim):
                     if m[k,j] == '.':
                         continue
-                    if m[k,j] != roomT[i]: #if not then somebody in j who can enter room i
+                    if m[k,j] != roomT[i]: #not an amphi for room i -> break
                         break 
-                    return [[(k, j), (pos,i)]]
-    return []
+                    return [[(k, j), (pos,i)]] #this one can go directly to room i
+    return [] #empty if no direct move possible
 
 #Part 1        
 best_cost = 10**8   
